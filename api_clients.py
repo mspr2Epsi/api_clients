@@ -67,5 +67,21 @@ def update_client(client_id):
     else:
         return jsonify({'message': 'Client not found'}), 404
 
+@app.route('/clients/<int:client_id>', methods=['DELETE'])
+def delete_client(client_id):
+    token = request.headers.get('Authorization')
+    if delete_possible(token) != True:
+        return jsonify({'message': 'Unauthorized'}), 401
+    
+    cursor.execute("SELECT * FROM clients WHERE ClientID = %s", (client_id,))
+    client = cursor.fetchone()
+    if client is None:
+        return jsonify({'message': 'Client not found'}), 404
+
+    cursor.execute("DELETE FROM clients WHERE ClientID = %s", (client_id,))
+    db_connection.commit()
+
+    return jsonify({'message': 'Client deleted successfully'}), 200
+
 if __name__ == '__main__':
     app.run(debug=True)
