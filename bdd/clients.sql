@@ -2,10 +2,10 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1:3306
--- Généré le : mer. 24 avr. 2024 à 14:10
--- Version du serveur : 8.0.31
--- Version de PHP : 8.0.26
+-- Host: 127.0.0.1:3306
+-- Generation Time: May 13, 2024 at 01:33 PM
+-- Server version: 8.0.31
+-- PHP Version: 8.0.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `mspr2`
+-- Database: `mspr2`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `clients`
+-- Table structure for table `clients`
 --
 
 DROP TABLE IF EXISTS `clients`;
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `clients` (
 ) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Déchargement des données de la table `clients`
+-- Dumping data for table `clients`
 --
 
 INSERT INTO `clients` (`ClientID`, `Nom`, `Prenom`, `Telephone`, `Age`, `Email`, `Adresse`, `RoleID`) VALUES
