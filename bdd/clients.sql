@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `clients` (
   `Adresse` varchar(255) DEFAULT NULL,
   `RoleID` int DEFAULT NULL,
   PRIMARY KEY (`ClientID`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `clients`
