@@ -1,9 +1,9 @@
 import unittest
-from unittest.mock import  patch, MagicMock
+from unittest.mock import  patch
 from api_clients import app
 
 
-class TestGetClients(unittest.TestCase):
+class TestClients(unittest.TestCase):
     def setUp(self):
         self.app = app.test_client()
 
