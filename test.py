@@ -69,5 +69,61 @@ class TestGetClients(unittest.TestCase):
             data = response.get_json()
             self.assertEqual(data['message'], 'Incomplete data')
 
+
+    def test_update_client_with_invalid_token(self):
+        with patch('api_clients.update_possible', return_value=False):
+            client_id = 1
+            data = {
+                'Nom': 'Updated Name',
+                'Prenom': 'Updated Firstname',
+                'Telephone': '1234567890',
+                'Age': 30,
+                'Email': 'updated_email@example.com',
+                'Adresse': 'Updated Address',
+                'RoleID': 1
+            }
+            response = self.app.put(f'/clients/{client_id}', json=data, headers={'Authorization': 'invalid_token'})
+            self.assertEqual(response.status_code, 401)
+            data = response.get_json()
+            self.assertEqual(data['message'], 'Unauthorized')
+
+    def test_update_client_with_incomplete_data(self):
+        with patch('api_clients.update_possible', return_value=True):
+            client_id = 1
+            data = {
+                'Nom': 'Updated Name',
+                'Prenom': 'Updated Firstname',
+                'Telephone': '1234567890',
+                'Age': 30,
+                'Email': 'updated_email@example.com'
+            }
+            response = self.app.put(f'/clients/{client_id}', json=data, headers={'Authorization': 'valid_token'})
+            self.assertEqual(response.status_code, 400)
+            data = response.get_json()
+            self.assertEqual(data['message'], 'Incomplete data')
+
+
+
+    def test_delete_client_with_invalid_token(self):
+        with patch('api_clients.delete_possible', return_value=False):
+            client_id = 1
+            response = self.app.delete(f'/clients/{client_id}', headers={'Authorization': 'invalid_token'})
+            self.assertEqual(response.status_code, 401)
+            data = response.get_json()
+            self.assertEqual(data['message'], 'Unauthorized')
+
+    def test_delete_nonexistent_client(self):
+        with patch('api_clients.delete_possible', return_value=True):
+            client_id = 999  # assuming a non-existent client ID
+            response = self.app.delete(f'/clients/{client_id}', headers={'Authorization': 'valid_token'})
+            self.assertEqual(response.status_code, 404)
+            data = response.get_json()
+            self.assertEqual(data['message'], 'Client not found')
+
+
+
+
+
+
 if __name__ == '__main__':
     unittest.main()
