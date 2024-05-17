@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        // Définissez DOCKER_HOST pour le pipeline
+        DOCKER_HOST = 'tcp://host.docker.internal:2375'
+    }
+
     stages {
         stage('Preparation') {
             steps {
