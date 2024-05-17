@@ -1,8 +1,13 @@
-from db_connector import connect_to_database, close_connection
-from flask import Flask, request, jsonify
-from roles import  read_possible,update_possible,creation_possible,delete_possible
+import os
 import pika
+from flask import Flask, request, jsonify
 from datetime import datetime
+from db_connector import connect_to_database, close_connection
+from roles import read_possible, update_possible, creation_possible, delete_possible
+
+# Configuration de RabbitMQ
+RABBITMQ_HOST = os.getenv('RABBITMQ_HOST', 'localhost')
+RABBITMQ_PORT = os.getenv('RABBITMQ_PORT', 5672)  # Le port par défaut de RabbitMQ est 5672
 
 # Connection à RabbitMQ
 connection = pika.BlockingConnection(
