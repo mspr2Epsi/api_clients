@@ -14,7 +14,7 @@ pipeline {
                     docker.image('python:3.8-slim').inside('-u root') {
                         // Installez les dépendances dans un répertoire spécifique
                         sh 'pip install --target=/usr/local/lib/python3.8/site-packages -r requirements.txt'
-                        sh 'python -m unittest discover -s tests'
+                        sh 'python -m unittest discover -s test'
                     }
                 }
             }
