@@ -1,9 +1,10 @@
 pipeline {
     agent any
 
-    environment {
-        // Définir les variables d'environnement requises
-    }
+    // Commentez ou retirez cette section si aucune variable d'environnement n'est nécessaire
+    // environment {
+    //     SOME_ENV_VAR = 'value'
+    // }
 
     stages {
         stage('Preparation') {
@@ -15,7 +16,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 echo 'Exécution des tests...'
-                sh 'python -m unittest test.py' // Exécute le script de test
+                sh 'python -m unittest discover -s tests' // Assurez-vous que le dossier 'tests' contient vos tests
             }
         }
     }
