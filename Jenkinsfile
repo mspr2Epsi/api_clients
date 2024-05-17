@@ -13,7 +13,7 @@ pipeline {
                     // Exécution des commandes dans un conteneur Docker Python
                     docker.image('python:3.8-slim').inside {
                         // Installez les dépendances et exécutez les tests ici
-                        sh 'pip install -r requirements.txt'
+                        sh 'pip install --user -r requirements.txt'
                         sh 'python -m unittest discover -s tests'
                     }
                 }
