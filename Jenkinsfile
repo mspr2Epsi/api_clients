@@ -10,10 +10,10 @@ pipeline {
         stage('Preparation') {
             steps {
                 script {
-                    // Exécution des commandes dans un conteneur Docker Python
-                    docker.image('python:3.8-slim').inside {
-                        // Installez les dépendances et exécutez les tests ici
-                        sh 'pip install --user -r requirements.txt'
+                    // Exécution des commandes dans un conteneur Docker Python en tant que root
+                    docker.image('python:3.8-slim').inside('-u root') {
+                        // Installez les dépendances dans un répertoire spécifique
+                        sh 'pip install --target=/usr/local/lib/python3.8/site-packages -r requirements.txt'
                         sh 'python -m unittest discover -s tests'
                     }
                 }
