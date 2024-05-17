@@ -13,9 +13,9 @@ pipeline {
             steps {
                 script {
                     // Exécution des commandes dans un conteneur Docker Python en tant que root
-                    docker.image('python:3.8-slim').inside('-u root --network=jenkins-network') {
+                    docker.image('python:3.12.3-slim').inside('-u root --network=jenkins-network') {
                         // Installez les dépendances dans un répertoire spécifique
-                        sh 'pip install --target=/usr/local/lib/python3.8/site-packages -r requirements.txt'
+                        sh 'pip install --target=/usr/local/lib/python3.12/site-packages -r requirements.txt'
                         sh 'python3 --version'
                         sh 'python -m unittest discover -s test'
                     }
