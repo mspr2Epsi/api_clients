@@ -4,6 +4,8 @@ pipeline {
     environment {
         // Définissez DOCKER_HOST pour le pipeline
         DOCKER_HOST = 'tcp://host.docker.internal:2375'
+        RABBITMQ_HOST = 'rabbitmq'  // Assurez-vous que ce nom correspond au nom du service RabbitMQ dans votre réseau Docker
+        RABBITMQ_PORT = '5672'      // Port par défaut de RabbitMQ
     }
 
     stages {
@@ -11,7 +13,7 @@ pipeline {
             steps {
                 script {
                     // Exécution des commandes dans un conteneur Docker Python en tant que root
-                    docker.image('python:3.8-slim').inside('-u root') {
+                    docker.image('python:3.8-slim').inside('-u root --network=jenkins-network') {
                         // Installez les dépendances dans un répertoire spécifique
                         sh 'pip install --target=/usr/local/lib/python3.8/site-packages -r requirements.txt'
                         sh 'python3 --version'
