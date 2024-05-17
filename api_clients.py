@@ -4,14 +4,18 @@ from roles import  read_possible,update_possible,creation_possible,delete_possib
 import pika
 from datetime import datetime
 
-#pour le message broker
+# Connection à RabbitMQ
 connection = pika.BlockingConnection(
-    pika.ConnectionParameters(host='localhost'))
+    pika.ConnectionParameters(host=RABBITMQ_HOST, port=RABBITMQ_PORT))
 channel = connection.channel()
+
+# Assurer que la queue existe
 channel.queue_declare(queue='message_broker_client')
 
+# Connexion à la base de données
 db_connection = connect_to_database()
 cursor = db_connection.cursor()
+
 app = Flask(__name__)
 
 @app.route('/clients', methods=['GET'])
