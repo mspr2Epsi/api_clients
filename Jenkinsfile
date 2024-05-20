@@ -4,11 +4,19 @@ pipeline {
     environment {
         // Définissez DOCKER_HOST pour le pipeline
         DOCKER_HOST = 'tcp://host.docker.internal:2375'
-        RABBITMQ_HOST = 'rabbitmq'  // Assurez-vous que ce nom correspond au nom du service RabbitMQ dans votre réseau Docker
+        RABBITMQ_HOST = 'rabbitmq'  // Nom du service RabbitMQ
         RABBITMQ_PORT = '5672'      // Port par défaut de RabbitMQ
     }
 
     stages {
+        stage('Lancer la Base de Données') {
+            steps {
+                script {
+                    // Créer et démarrer le conteneur de base de données
+                    sh 'docker run -d --name db_container -e MYSQL_ROOT_PASSWORD=password --network jenkins-network mysql:5.7'
+                }
+            }
+        }
         stage('Preparation') {
             steps {
                 script {
@@ -25,6 +33,11 @@ pipeline {
     }
 
     post {
+        always {
+            // Arrêter et nettoyer les conteneurs de base de données et autres services
+            sh 'docker rm -f db_container'
+            sh 'docker-compose -f docker-compose.yml down'
+        }
         success {
             echo 'Tests completed successfully.'
         }
