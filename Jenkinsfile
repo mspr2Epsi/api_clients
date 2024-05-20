@@ -2,27 +2,34 @@ pipeline {
     agent any
 
     environment {
-        // Définissez DOCKER_HOST pour le pipeline
         DOCKER_HOST = 'tcp://host.docker.internal:2375'
-        RABBITMQ_HOST = 'rabbitmq'  // Nom du service RabbitMQ
-        RABBITMQ_PORT = '5672'      // Port par défaut de RabbitMQ
+        RABBITMQ_HOST = 'rabbitmq'
+        RABBITMQ_PORT = '5672'
+        DB_HOST = 'db'  // Utilisé pour se connecter depuis les autres conteneurs
+        DB_PORT = '3306'
     }
 
     stages {
-        stage('Lancer la Base de Données') {
+        stage('Démarrer la base de données') {
             steps {
                 script {
-                    // Créer et démarrer le conteneur de base de données
-                    sh 'docker run -d --name db_container -e MYSQL_ROOT_PASSWORD=password --network jenkins-network mysql:5.7'
+                    // Utilisation de mysql:8.0, changez selon vos besoins
+                    sh """
+                    docker run -d \
+                    --network jenkins-network \
+                    --name db \
+                    -e MYSQL_ROOT_PASSWORD=password \
+                    -e MYSQL_DATABASE=mspr2 \
+                    -v \$(pwd)/clients.sql:/docker-entrypoint-initdb.d/init.sql:ro \
+                    mysql:8.0
+                    """
                 }
             }
         }
         stage('Preparation') {
             steps {
                 script {
-                    // Exécution des commandes dans un conteneur Docker Python en tant que root
                     docker.image('python:3.12.3-slim').inside('-u root --network=jenkins-network') {
-                        // Installez les dépendances dans un répertoire spécifique
                         sh 'pip install --target=/usr/local/lib/python3.12/site-packages -r requirements.txt'
                         sh 'python3 --version'
                         sh 'python -m unittest discover -s test'
@@ -34,9 +41,8 @@ pipeline {
 
     post {
         always {
-            // Arrêter et nettoyer les conteneurs de base de données et autres services
-            sh 'docker rm -f db_container'
-            sh 'docker-compose -f docker-compose.yml down'
+            sh 'docker stop db rabbitmq jenkins'
+            sh 'docker rm db rabbitmq jenkins'
         }
         success {
             echo 'Tests completed successfully.'
