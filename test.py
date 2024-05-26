@@ -60,9 +60,6 @@ class TestClients(unittest.TestCase):
                 'Nom': 'John',
                 'Prenom': 'Doe',
                 'Telephone': '1234567890',
-                'Age': 30,
-                'Email': 'john@example.com',
-                'Adresse': '123 Street'
             }
             response = self.app.post('/clients', json=data, headers={'Authorization': 'valid_token'})
             self.assertEqual(response.status_code, 400)
