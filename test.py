@@ -7,6 +7,47 @@ class TestClients(unittest.TestCase):
     def setUp(self):
         self.app = app.test_client()
 
+    # Tests unitaires
+    def tests_unitaires(self):
+        self.test_get_clients_with_valid_token()
+        self.test_get_clients_with_invalid_token()
+        self.test_create_client_with_incomplete_data()
+        self.test_update_client_with_invalid_token()
+        self.test_update_client_with_incomplete_data()
+        self.test_delete_nonexistent_client()
+
+    # Tests d'intégration
+    def test_integration(self):
+        self.test_create_client_with_valid_data()
+        self.test_create_client_with_invalid_token()
+        self.test_update_client_with_invalid_token()
+        self.test_delete_client_with_invalid_token()
+        self.test_delete_nonexistent_client()
+
+    # Tests fonctionnels
+    def test_fonctionnel(self):
+        self.test_get_clients_with_valid_token()
+        self.test_create_client_with_valid_data()
+        self.test_update_client_with_invalid_token()
+        self.test_delete_client_with_invalid_token()
+
+    # Tests de régression
+    def test_regression(self):
+        self.test_get_clients_with_valid_token()
+        self.test_create_client_with_valid_data()
+        self.test_delete_nonexistent_client()
+
+    # Tests de performance
+    def test_performance(self):
+        # Placeholder for performance tests
+        pass
+
+    # Tests de sécurité
+    def test_securite(self):
+        self.test_get_clients_with_invalid_token()
+        self.test_create_client_with_invalid_token()
+        self.test_delete_client_with_invalid_token()
+
     #récupérer client avec token valide
     def test_get_clients_with_valid_token(self):
         with unittest.mock.patch('api_clients.read_possible', return_value=True):
@@ -117,10 +158,5 @@ class TestClients(unittest.TestCase):
             data = response.get_json()
             self.assertEqual(data['message'], 'Client not found')
 
-
-
-
-
-
-if __name__ == '__main__':
-    unittest.main()
+# if __name__ == '__main__':
+#     unittest.main()

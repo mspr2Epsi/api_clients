@@ -1,17 +1,26 @@
-from db_connector import connect_to_database, close_connection
-from flask import Flask, request, jsonify
-from roles import  read_possible,update_possible,creation_possible,delete_possible
+import os
 import pika
+from flask import Flask, request, jsonify
 from datetime import datetime
+from db_connector import connect_to_database, close_connection
+from roles import read_possible, update_possible, creation_possible, delete_possible
 
-#pour le message broker
+# Configuration de RabbitMQ
+RABBITMQ_HOST = os.getenv('RABBITMQ_HOST', 'localhost')
+RABBITMQ_PORT = os.getenv('RABBITMQ_PORT', 5672)  # Le port par défaut de RabbitMQ est 5672
+
+# Connection à RabbitMQ
 connection = pika.BlockingConnection(
-    pika.ConnectionParameters(host='localhost'))
+    pika.ConnectionParameters(host=RABBITMQ_HOST, port=RABBITMQ_PORT))
 channel = connection.channel()
+
+# Assurer que la queue existe
 channel.queue_declare(queue='message_broker_client')
 
+# Connexion à la base de données
 db_connection = connect_to_database()
 cursor = db_connection.cursor()
+
 app = Flask(__name__)
 
 @app.route('/clients', methods=['GET'])
