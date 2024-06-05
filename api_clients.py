@@ -5,16 +5,20 @@ from datetime import datetime
 from db_connector import connect_to_database, close_connection
 from roles import read_possible, update_possible, creation_possible, delete_possible
 
-# Configuration de RabbitMQ
-RABBITMQ_HOST = os.getenv('RABBITMQ_HOST', 'localhost')
-RABBITMQ_PORT = os.getenv('RABBITMQ_PORT', 5672)  # Le port par défaut de RabbitMQ est 5672
+rabbitmq_host = 'rabbitmq'
+rabbitmq_port = 5672
+rabbitmq_user = 'user'
+rabbitmq_password = 'password'
 
-# Connection à RabbitMQ
+credentials = pika.PlainCredentials(rabbitmq_user, rabbitmq_password)
 connection = pika.BlockingConnection(
-    pika.ConnectionParameters(host=RABBITMQ_HOST, port=RABBITMQ_PORT))
+    pika.ConnectionParameters(
+        host=rabbitmq_host,
+        port=rabbitmq_port,
+        credentials=credentials
+        )
+    )
 channel = connection.channel()
-
-# Assurer que la queue existe
 channel.queue_declare(queue='message_broker_client')
 
 # Connexion à la base de données
@@ -125,4 +129,4 @@ def delete_client(client_id):
     return jsonify({'message': 'Client deleted successfully'}), 200
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000,debug=True)

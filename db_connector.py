@@ -1,17 +1,20 @@
 import mysql.connector
+import os
 
 def connect_to_database():
-    host = "localhost"
-    user = "root"
-    password = "mdpTest"
-    database = "mspr2"
+    host = os.getenv('DB_HOST')
+    port = os.getenv('DB_PORT')
+    user = os.getenv('DB_USER')
+    database = os.getenv('DB_NAME')
+    password = os.getenv('DB_PASSWORD')
 
     try:
         connection = mysql.connector.connect(
             host=host,
+            port=port,
             user=user,
+            database=database,
             password=password,
-            database=database
         )
 
         if connection.is_connected():
