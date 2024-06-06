@@ -12,7 +12,9 @@
 
 Le fichier docker-compose.yml se trouve dans le répertoire docker_config.
 Il faut ensuite utiliser les commandes suivantes dans le dossier qui contient l'ensemble du projet
+
 docker-compose down -v
+
 docker-compose up --build
 
 Une fois le projet monté dans docker il suffit de lancer le container de du message broker en premier puis celui des API
