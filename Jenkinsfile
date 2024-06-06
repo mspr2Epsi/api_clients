@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Run Tests') {
             steps {
-                sh 'python api_clients/test.py'
+                sh 'test.py'
             }
         }
     }
