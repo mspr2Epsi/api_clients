@@ -1,5 +1,7 @@
 # Pour utiliser le projet avec docker il faut cloner les 5 répertoires git de l’organisation et respecter l’architecture suivante :
+
 │création d'un dossier qui contient l'ensempble projet/
+│ 
 ├── api_clients/
 │  
 ├── api_commandes/
