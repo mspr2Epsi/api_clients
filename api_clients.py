@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify
 from datetime import datetime
 from db_connector import connect_to_database, close_connection
 from roles import read_possible, update_possible, creation_possible, delete_possible
-#test webhook
+
 rabbitmq_host = 'rabbitmq'
 rabbitmq_port = 5672
 rabbitmq_user = 'user'
