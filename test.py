@@ -37,11 +37,6 @@ class TestClients(unittest.TestCase):
         self.test_create_client_with_valid_data()
         self.test_delete_nonexistent_client()
 
-    # Tests de performance
-    def test_performance(self):
-        # Placeholder for performance tests
-        pass
-
     # Tests de sécurité
     def test_securite(self):
         self.test_get_clients_with_invalid_token()
